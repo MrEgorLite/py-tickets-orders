@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from rest_framework import viewsets
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 from cinema.paginations import OrderPagination
@@ -85,13 +83,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
             movies = self.request.query_params.get("movie")
 
             if date:
-                # queryset = queryset.filter(show_time=date) not work
-                temp = datetime.strptime(date, "%Y-%m-%d")
-                queryset = queryset.filter(
-                    show_time__day=temp.day,
-                    show_time__month=temp.month,
-                    show_time__year=temp.year,
-                )
+                queryset = queryset.filter(show_time__date=date,)
 
             if movies:
                 movies_ids = [int(str_id) for str_id in movies.split(",")]
